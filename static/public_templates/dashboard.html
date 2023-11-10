@@ -13,6 +13,8 @@
 
     <title>Dashboard</title>
 
+    <script src="{% static '/js/mijs.js' %}"></script>
+
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link
@@ -21,6 +23,8 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
 
 </head>
@@ -120,7 +124,7 @@
 
                         <!-- Nav Item - User Information -->
                         <div class="d-flex flex-column justify-content-center">
-                            <a href="{% url 'logout' %} "><i class="fa fa-sign-out-alt"></i></a>
+                            <a href="{% url 'logout' %} "><i class="fa fa-sign-out-alt fa-2x"></i></a>
                         </div>
 
 

@@ -1,3 +1,22 @@
 body {
   background-color: aqua;
 }
+
+.mask:hover {
+  background: #ebebfd;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.justify-middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-style {
+  text-decoration: none;
+}

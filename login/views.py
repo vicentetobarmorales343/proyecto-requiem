@@ -1,8 +1,9 @@
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 import requests
 from .decorators import *
-import requests
+import json
 
 # Create your views here.
 
@@ -58,3 +59,86 @@ def users_view(req):
             return render(req, 'users.html', {'users': users})
         else:
             return render(req, 'error.html', {'error': 'Failed to retrieve users from API'})
+
+
+def usersEntry_page(request):
+    if request.method == 'POST':
+        rut = request.POST['rut']
+        nombre = request.POST['name']
+        cargo = request.POST['charge']
+        contraseña = request.POST['password']
+
+        user_entry = {
+            'rut': rut,
+            'nombre': nombre,
+            'idrol': cargo,
+            'password': contraseña,
+        }
+
+        response_fu = requests.get('http://localhost:4000/api/Inventory/Users')
+        users = response_fu.json()
+
+        for user in users:
+            if user['rut'] == rut:
+                return JsonResponse({'status': 'error', 'message': 'User ya existe'})
+        else:
+            response = requests.post(
+                'http://localhost:4000/api/Inventory/addUser', data=json.dumps(user_entry), headers={'Content-Type': 'application/json'})
+            if response.status_code == 200:
+                return redirect('users')
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Usuario no ingresado'})
+
+    else:
+        # renderiza tu formulario si el método no es POST
+        return render(request, 'usersEntry.html')
+
+
+@csrf_exempt
+def deleteUser(request, user_rut):
+    if request.method == 'DELETE':
+        response = requests.delete(
+            'http://localhost:4000/api/Inventory/deleteUser/' + user_rut)
+        if response.status_code == 200:
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Failed to delete user'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+def updateUser(request, user_rut):
+
+    user = getUser(user_rut)
+
+    if request.method == 'POST':
+        nombre = request.POST['name']
+        cargo = request.POST['charge']
+        contraseña = request.POST['password']
+
+        user_entry = {
+            'nombre': nombre,
+            'idrol': cargo,
+            'password': contraseña,
+        }
+
+        response = requests.put(
+            'http://localhost:4000/api/Inventory/updateUser/'+user_rut, data=json.dumps(user_entry), headers={'Content-Type': 'application/json'})
+        if response.status_code == 200:
+            return redirect('users')
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Usuario no actualizado'})
+
+    else:
+        return render(request, 'usersUpdate.html', {'user': user})
+
+
+def getUser(user_rut):
+    response = requests.get(
+        'http://localhost:4000/api/Inventory/User/'+user_rut)
+    if response.status_code == 200:
+        data = response.json()
+        if data:
+            return data[0]
+    else:
+        return None

@@ -1,20 +1,47 @@
 {% extends 'dashboard.html' %}
-<div class="p-3" style="background-color: #00897b;">
-  <h1>Productos</h1>
-</div>
+
+{% load static %}
+
 {% block content %}
-{% for product in products %}
-<div class="shadow-sm border border-secondary-subtle p-2 m-3 rounded" style="width: 30rem">
-  <div class="d-flex">
-    <div class="border border-secondary-subtle d-inline-flex mx-1" style="width: 10rem; height: 10rem"
-      style="background-color: #02534b;">insertar
-      foto</div>
-    <div class="px-3">
-      <h3>{{ product.nombre }}</h3>
-      <p>SKU: {{ product.SKU }}</p>
-      <p>Stock: {{ product.stock }}</p>
-    </div>
-  </div>
+
+<div class="mb-5 space-between">
+  <h1 class="d-inline">Listado de productos</h1>
+  <a href="{% url 'addProduct' %}" class="justify-middle" style="text-decoration:none">
+    <button class=" d-inline btn btn-primary">
+      <i class="fas fa-plus"></i>
+      Añadir
+    </button>
+  </a>
 </div>
-{% endfor %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Foto</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">SKU</th>
+      <th scope="col">Stock</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr class="mask">
+      <td><img src="{{ product.foto.url }}" alt="{{ product.nombre }}" style="max-width: 10rem;"></td>
+      <td>{{ product.nombre }}</td>
+      <td>{{ product.SKU }}</td>
+      <td>{{ product.stock }}</td>
+      <td>
+        <a href="{% url 'updateProduct' product.idarticulo %}" class="btn btn-primary">
+          <i class="fas fa-edit"></i>
+        </a>
+        <button class="btn btn-danger" onclick="deleteProduct('{{ product.idarticulo }}')">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'dashboard.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="mb-5">Formulario de edición de usuario</h1>
+<form method="POST" style="width: 40%;">
+  {% csrf_token %}
+
+
+  <div class="form-group">
+    <label for="name" class="h4">Nombre</label>
+    <input type="text" class="form-control" name="name" id="name" value="{{ user.nombre }}" required>
+  </div>
+
+  <div class=" form-group">
+    <label for="password" class="h4">Contraseña</label>
+    <input type="text" class="form-control" name="password" id="password" value="{{ user.password }}" required>
+  </div>
+
+  <div class="form-group">
+    <label for="charge" class="h4">Cargo</label>
+    <select class="form-control" name="charge" id="charge" required>
+      {% if user.idrol == 1 %}
+      <option value="1" selected>Gerente</option>
+      <option value="2">Jefe de Trade</option>
+      <option value="3">Empleado</option>
+      {% elif user.idrol == 2 %}
+      <option value="1">Gerente</option>
+      <option value="2" selected>Jefe de Trade</option>
+      <option value="3">Empleado</option>
+      {% else %}
+      <option value="1">Gerente</option>
+      <option value="2">Jefe de Trade</option>
+      <option value="3" selected>Empleado</option>
+      {% endif %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <input class="btn btn-primary btn-lg mt-3" type="submit" value="Ingresar" name="Ingresar">
+  </div>
+
+</form>
+
+
+{% endblock %}

@@ -30,4 +30,13 @@ urlpatterns = [
     path('addProduct/', views_articulos.productsEntry_page,
          name="addProduct"),
     path('users/', views_login.users_view, name="users"),
+    path('delete_user/<str:user_rut>',
+         views_login.deleteUser, name='deleteUser'),
+    path('delete_product/<str:idarticulo>',
+         views_articulos.deleteProduct, name='deleteProduct'),
+    path('addUser/', views_login.usersEntry_page, name="addUser"),
+    path('updateUser/<str:user_rut>',
+         views_login.updateUser, name="updateUser"),
+    path('updateProduct/<str:idarticulo>',
+         views_articulos.updateProduct, name='updateProduct')
 ]
