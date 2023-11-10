@@ -1,0 +1,41 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+
+<h1>Usuarios</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">RUT</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Ingreso a la empresa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{ user.rut }}</th>
+            <td>{{ user.nombre }}</td>
+            {% if user.idrol == 1 %}
+            <td>Gerente</td>
+            {% elif user.idrol == 2 %}
+            <td>Jefe de trade</td>
+            {% else %}
+            <td>Usuario</td>
+            {% endif %}
+            <td>{{ user.created_at }}</td>
+            <td>
+              <a href="#" class="btn btn-warning">Editar</a>
+              <a href="#" class="btn btn-danger">Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="#" class="btn btn-primary">Crear</a>
+    </div>
+  </div>
+  {% endblock %}

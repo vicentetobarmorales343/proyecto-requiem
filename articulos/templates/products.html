@@ -1,0 +1,20 @@
+{% extends 'dashboard.html' %}
+<div class="p-3" style="background-color: #00897b;">
+  <h1>Productos</h1>
+</div>
+{% block content %}
+{% for product in products %}
+<div class="shadow-sm border border-secondary-subtle p-2 m-3 rounded" style="width: 30rem">
+  <div class="d-flex">
+    <div class="border border-secondary-subtle d-inline-flex mx-1" style="width: 10rem; height: 10rem"
+      style="background-color: #02534b;">insertar
+      foto</div>
+    <div class="px-3">
+      <h3>{{ product.nombre }}</h3>
+      <p>SKU: {{ product.SKU }}</p>
+      <p>Stock: {{ product.stock }}</p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
