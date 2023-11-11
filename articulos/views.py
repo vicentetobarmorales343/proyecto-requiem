@@ -27,6 +27,7 @@ def productsEntry_page(request):
         precio = request.POST['price']
         stock = request.POST['stock']
         descripcion = request.POST['description']
+        image = request.POST['imageUrl']
 
         product = {
             'idcategoria': categoria,
@@ -35,6 +36,7 @@ def productsEntry_page(request):
             'precio_venta': precio,
             'stock': stock,
             'descripcion': descripcion,
+            'image': image,
         }
 
         response = requests.post(
@@ -42,7 +44,8 @@ def productsEntry_page(request):
 
         if response.status_code == 200:
             # redirige a una nueva página si el ingreso es exitoso
-            return redirect('products')
+            return JsonResponse({'status': 'success', 'message': 'Product added successfully', 'product': product})
+            # return redirect('products')
         else:
             return JsonResponse({'status': 'error', 'message': 'Failed to submit the product from API'})
 
@@ -74,6 +77,7 @@ def updateProduct(req, idarticulo):
         precio = req.POST['price']
         stock = req.POST['stock']
         descripcion = req.POST['description']
+        image = req.POST['imageUrl']
 
         product = {
             'idcategoria': categoria,
@@ -82,6 +86,7 @@ def updateProduct(req, idarticulo):
             'precio_venta': precio,
             'stock': stock,
             'descripcion': descripcion,
+            'image': image,
         }
 
         response = requests.put(
@@ -89,7 +94,7 @@ def updateProduct(req, idarticulo):
         if response.status_code == 200:
             return redirect('products')
         else:
-            return JsonResponse({'status': 'error', 'message': 'Producto no actualizado'})
+            return JsonResponse({'status': 'error', 'message': 'Producto no actualizado', 'product': product})
 
     else:
         return render(req, 'editarProducto.html', {'idarticulo': id_articulo})

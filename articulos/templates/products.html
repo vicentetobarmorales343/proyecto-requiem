@@ -27,7 +27,8 @@
   <tbody>
     {% for product in products %}
     <tr class="mask">
-      <td><img src="{{ product.foto.url }}" alt="{{ product.nombre }}" style="max-width: 10rem;"></td>
+      <td><img src="{{ product.image }}" alt="{{ product.nombre }}"
+          style="height:180px; width:180px; object-fit: cover; border-radius:15px"></td>
       <td>{{ product.nombre }}</td>
       <td>{{ product.SKU }}</td>
       <td>{{ product.stock }}</td>

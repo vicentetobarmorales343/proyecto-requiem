@@ -41,12 +41,71 @@
   </div>
 
   <div class="form-group">
-    <input class="" type="file" id="image" name="image">
+    <input type="file" id="file" name="file">
   </div>
+
+  <div class="form-group">
+    <input type="hidden" id="imageUrl" name="imageUrl">
+  </div>
+
+  <img id="imagen-cargada" src="" style="height: 180px; width: 180px; object-fit: scale-down; border-radius:15px">
 
   <div class="form-group">
     <input class="btn btn-primary btn-lg mt-3" type="submit" value="Ingresar" name="Ingresar">
   </div>
 
 </form>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pica/6.1.1/pica.min.js"></script>
+<script>
+  const fileInput = document.getElementById('file');
+  const img = document.getElementById('imagen-cargada');
+  const imageUrlInput = document.getElementById('imageUrl');
+  let imageUrl;
+
+  fileInput.addEventListener('change', (e) => {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (e) => {
+      imageUrl = reader.result;
+      img.onload = function () {
+        // Create an off-screen canvas
+        var offScreenCanvas = document.createElement('canvas');
+        const aspectRatio = img.naturalWidth / img.naturalHeight;
+        if (img.naturalWidth > img.naturalHeight) {
+          offScreenCanvas.width = 200;
+          offScreenCanvas.height = 200 / aspectRatio;
+        } else {
+          offScreenCanvas.height = 200;
+          offScreenCanvas.width = 200 * aspectRatio;
+        }
+
+        // Resize the image
+        pica().resize(img, offScreenCanvas)
+          .then(result => pica().toBlob(result, 'image/jpeg', 0.90))
+          .then(blob => {
+            // Create a new FileReader instance
+            var reader = new FileReader();
+            // Listen to the 'load' event
+            reader.addEventListener('load', () => {
+              // reader.result contains the Base64 data
+              imageUrlInput.value = reader.result;
+            });
+            // Convert the blob to Base64
+            reader.readAsDataURL(blob);
+          });
+      }
+      img.src = imageUrl;
+      imageUrlInput.value = imageUrl;
+      console.log(imageUrlInput.value)
+    });
+
+    reader.readAsDataURL(file);
+  });
+</script>
+
+
 {% endblock %}
