@@ -1,5 +1,5 @@
 body {
-  background-color: aqua;
+  background-color: none;
 }
 
 .mask:hover {
@@ -19,4 +19,17 @@ body {
 
 .no-style {
   text-decoration: none;
+}
+
+.description {
+  white-space: pre-line;
+  word-wrap: break-word;
+  max-width: 500px;
+}
+
+.img-fullsize {
+  height: 100%; /* Esto hará que la altura de la imagen sea la misma que la de su contenedor */
+  width: 100%; /* Esto hará que el ancho de la imagen sea el mismo que el de su contenedor */
+  object-fit: cover; /* Esto hará que la imagen cubra todo el espacio disponible sin distorsionarse */
+  border-radius: 15px;
 }

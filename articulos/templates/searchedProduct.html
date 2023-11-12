@@ -6,7 +6,7 @@
 
 {% block content %}
 
-
+{%if results %}
 <div class="p-2 space-between">
   <h1 class="d-inline">Productos</h1>
   {% if request.session.role == 1 or request.session.role == 2 %}
@@ -18,7 +18,6 @@
   </a>
   {% endif %}
 </div>
-
 <div class="pb-4">
   <form action="{% url 'searchProduct' %}" method="POST" class="form-inline">
     {% csrf_token %}
@@ -27,7 +26,6 @@
     <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Buscar</button>
   </form>
 </div>
-
 <table class="table">
   <thead>
     <tr>
@@ -40,14 +38,14 @@
     </tr>
   </thead>
   <tbody>
-    {% for product in products %}
+    {% for product in results %}
     <tr class="mask" data-toggle="collapse" data-target="#card-body-{{ product.idarticulo}}" style="cursor: pointer;">
       <td><img src="{{ product.image }}" alt="{{ product.nombre }}"
           style="height:60px; width:60px; object-fit: cover; border-radius:15px"></td>
       <td>{{ product.nombre }}</td>
       <td>{{ product.SKU }}</td>
       <td>{{ product.stock }}</td>
-      <td>${{ product.precio_venta|intcomma }}</td>
+      <td>{{ product.precio_venta }}</td>
       {% if request.session.role == 1 or request.session.role == 2 %}
       <td>
         <a href="{% url 'updateProduct' product.idarticulo %}" class="btn btn-primary">
@@ -77,5 +75,28 @@
       {% endfor %}
   </tbody>
 </table>
+{%else%}
+<div class="p-2 space-between">
+  <h1 class="d-inline">Productos</h1>
+  <a href="{% url 'addProduct' %}" class="justify-middle" style="text-decoration:none">
+    <button class=" d-inline btn btn-primary">
+      <i class="fas fa-plus"></i>
+      Añadir
+    </button>
+  </a>
+</div>
+<div class="pb-4">
+  <form action="{% url 'searchProduct' %}" method="POST" class="form-inline">
+    {% csrf_token %}
+    <input class="form-control mr-sm-2 w-75" type="search" placeholder="Buscar productos" aria-label="Search"
+      name="search">
+    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Buscar</button>
+  </form>
+</div>
+<div class="alert alert-danger" role="alert">
+  <h1>No se encontraron resultados</h1>
+</div>
+{%endif%}
+
 
 {% endblock %}

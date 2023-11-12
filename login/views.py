@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 import requests
-from .decorators import *
+from decorators import *
 import json
 
 # Create your views here.
@@ -10,9 +10,7 @@ import json
 
 @login_required
 def home_page(req):
-    username = req.session.get('username')
-    context = {'username': username}
-    return render(req, "home.html", context)
+    return render(req, "home.html")
 
 
 @redirect_if_logged_in
@@ -30,6 +28,8 @@ def login_page(req):
                 # If the username and password match, return a success status
                 req.session['login_status'] = True
                 req.session['username'] = user['nombre']
+                req.session['role'] = user['idrol']
+                req.session.save()
                 return redirect('home')
 
         # If no match was found after checking all users, return an error status
@@ -46,10 +46,9 @@ def logout_view(request):
     return redirect('login')
 
 
-def users_view(req):
-    return render(req, 'users.html')
-
-
+@login_required
+@role_required
+@admin_required
 def users_view(req):
     if req.method == 'GET':
         response = requests.get('http://localhost:4000/api/Inventory/Users')
@@ -61,6 +60,9 @@ def users_view(req):
             return render(req, 'error.html', {'error': 'Failed to retrieve users from API'})
 
 
+@login_required
+@role_required
+@admin_required
 def usersEntry_page(request):
     if request.method == 'POST':
         rut = request.POST['rut']
@@ -80,7 +82,7 @@ def usersEntry_page(request):
 
         for user in users:
             if user['rut'] == rut:
-                return JsonResponse({'status': 'error', 'message': 'User ya existe'})
+                return render(request, 'usersEntry.html', {'rut_founded': 'El identificador ya está en uso'})
         else:
             response = requests.post(
                 'http://localhost:4000/api/Inventory/addUser', data=json.dumps(user_entry), headers={'Content-Type': 'application/json'})
@@ -95,6 +97,9 @@ def usersEntry_page(request):
 
 
 @csrf_exempt
+@login_required
+@role_required
+@admin_required
 def deleteUser(request, user_rut):
     if request.method == 'DELETE':
         response = requests.delete(
@@ -107,6 +112,9 @@ def deleteUser(request, user_rut):
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
+@login_required
+@role_required
+@admin_required
 def updateUser(request, user_rut):
 
     user = getUser(user_rut)
@@ -133,6 +141,7 @@ def updateUser(request, user_rut):
         return render(request, 'usersUpdate.html', {'user': user})
 
 
+@login_required
 def getUser(user_rut):
     response = requests.get(
         'http://localhost:4000/api/Inventory/User/'+user_rut)

@@ -38,5 +38,8 @@ urlpatterns = [
     path('updateUser/<str:user_rut>',
          views_login.updateUser, name="updateUser"),
     path('updateProduct/<str:idarticulo>',
-         views_articulos.updateProduct, name='updateProduct')
+         views_articulos.updateProduct, name='updateProduct'),
+    path('searchProducts/',
+         views_articulos.searchProduct, name="searchProduct"),
+
 ]

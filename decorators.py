@@ -17,3 +17,21 @@ def redirect_if_logged_in(view_func):
         else:
             return view_func(request, *args, **kwargs)
     return wrapper_func
+
+
+def role_required(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if 'role' in request.session and request.session['role'] == 3:
+            return redirect('home')  # or wherever you want to redirect
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+def admin_required(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if 'role' in request.session and request.session['role'] == 2:
+            return redirect('home')  # or wherever you want to redirect
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper_func

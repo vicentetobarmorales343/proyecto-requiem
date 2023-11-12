@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'login',
     'django_browser_reload',
     'articulos',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024000000
+
+USE_L10N = True
+LANGUAGE_CODE = 'es-ES'

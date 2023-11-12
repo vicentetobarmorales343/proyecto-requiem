@@ -2,37 +2,43 @@
 {% block content %}
 
 <h1 class="mb-5">Formulario de ingreso de productos</h1>
+{% if sku_founded %}
+<div class="alert alert-danger" role="alert">
+  <h5>SKU ya está en uso</h5>
+</div>
+{% endif %}
 <form method="POST" style="width: 40%;">
   {% csrf_token %}
+
   <div class="form-group">
     <label for="sku" class="h4">SKU de producto</label>
-    <input type="number" class="form-control" name="sku" id="sku">
+    <input type="text" class="form-control" name="sku" id="sku" required maxlength="9" minlength="9">
   </div>
 
   <div class="form-group">
     <label for="category" class="h4">Categoria de producto</label>
-    <select class="form-control" name="category" id="category">
+    <select class="form-control" name="category" id="category" required>
       <option value="" selected disabled>Seleccione una categoría</option>
       <option value="1">Tecnología</option>
-      <option value="2">Electro y Línea Blanca</option>
-      <option value="3">Muebles</option>
+      <option value="2">Muebles</option>
+      <option value="3">Electro y Línea Blanca</option>
       <option value="4">Domitorio</option>
     </select>
   </div>
 
   <div class="form-group">
     <label for="name" class="h4">Nombre de producto</label>
-    <input type="text" class="form-control" name="name" id="name">
+    <input type="text" class="form-control" name="name" id="name" required>
   </div>
 
   <div class="form-group">
     <label for="price" class="h4">Precio de venta</label>
-    <input type="number" class="form-control" name="price" id="price">
+    <input type="number" class="form-control" name="price" id="price" required>
   </div>
 
   <div class="form-group">
     <label for="stock" class="h4">Stock</label>
-    <input type="number" class="form-control" name="stock" id="stock">
+    <input type="number" class="form-control" name="stock" id="stock" required>
   </div>
 
   <div class="form-group">
@@ -55,8 +61,6 @@
   </div>
 
 </form>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/6.1.1/pica.min.js"></script>
 <script>

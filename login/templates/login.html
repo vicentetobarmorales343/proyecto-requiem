@@ -18,13 +18,13 @@
     <h1 class="bg-dark text-light p-2">Login</h1>
     <div class="form-group d-flex flex-column p-5">
       <label for="username" class="d-inline-flex h2">RUT:</label>
-      <input type="text" id="username" name="username" class="p-2" />
+      <input type="text" id="username" name="username" class="p-2" required maxlength="10" />
       <small id="rut" class="form-text text-muted d-inline-flex ">Ingrese su rut sin punto y con guión, ejemplo
         "12345678-9"</small>
     </div>
     <div class="form-group d-flex justify-content-center flex-column p-5">
       <label for="password" class="d-inline-flex h2">Contraseña:</label>
-      <input type="password" id="password" name="password" class="p-2" />
+      <input type="password" id="password" name="password" class="p-2" required />
     </div>
 
     <input type="submit" value="Iniciar Sesión" class="btn btn-primary w-25 mb-5"

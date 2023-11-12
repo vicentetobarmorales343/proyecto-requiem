@@ -6,32 +6,32 @@
   {% csrf_token %}
   <div class="form-group">
     <label for="sku" class="h4">SKU de producto</label>
-    <input type="number" class="form-control" name="sku" id="sku" value="{{ idarticulo.SKU }}">
+    <input type="number" class="form-control" name="sku" id="sku" value="{{ idarticulo.SKU }}" required>
   </div>
 
   <div class="form-group">
     <label for="category" class="h4">Categoria de producto</label>
-    <select class="form-control" name="category" id="category" value="{{ idarticulo.categoria }}">
+    <select class="form-control" name="category" id="category" value="{{ idarticulo.categoria }}" required>
       <option value="1">Tecnología</option>
-      <option value="2">Electro y Línea Blanca</option>
-      <option value="3">Muebles</option>
+      <option value="2">Muebles</option>
+      <option value="3">Electro y Línea Blanca</option>
       <option value="4">Domitorio</option>
     </select>
   </div>
 
   <div class="form-group">
     <label for="name" class="h4">Nombre de producto</label>
-    <input type="text" class="form-control" name="name" id="name" value="{{ idarticulo.nombre }}">
+    <input type="text" class="form-control" name="name" id="name" value="{{ idarticulo.nombre }}" required>
   </div>
 
   <div class=" form-group">
     <label for="price" class="h4">Precio de venta</label>
-    <input type="number" class="form-control" name="price" id="price" value="{{ idarticulo.precio_venta }}">
+    <input type="number" class="form-control" name="price" id="price" value="{{ idarticulo.precio_venta }}" required>
   </div>
 
   <div class=" form-group">
     <label for="stock" class="h4">Stock</label>
-    <input type="number" class="form-control" name="stock" id="stock" value="{{ idarticulo.stock }}">
+    <input type="number" class="form-control" name="stock" id="stock" value="{{ idarticulo.stock }}" required>
   </div>
 
   <div class=" form-group">

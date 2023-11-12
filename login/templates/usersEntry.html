@@ -5,6 +5,13 @@
 {% block content %}
 
 <h1 class="mb-5">Formulario de ingreso de Usuarios</h1>
+
+{% if rut_founded %}
+<div class="alert alert-danger" role="alert">
+  <h5>{{rut_founded}}</h5>
+</div>
+{% endif %}
+
 <form method="POST" style="width: 40%;">
   {% csrf_token %}
   <div class="form-group">
