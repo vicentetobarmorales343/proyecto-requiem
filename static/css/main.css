@@ -24,7 +24,6 @@ body {
 .description {
   white-space: pre-line;
   word-wrap: break-word;
-  max-width: 500px;
 }
 
 .img-fullsize {

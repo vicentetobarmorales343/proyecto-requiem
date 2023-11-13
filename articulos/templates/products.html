@@ -48,20 +48,26 @@
       <td>{{ product.SKU }}</td>
       <td>{{ product.stock }}</td>
       <td>${{ product.precio_venta|intcomma }}</td>
-      {% if request.session.role == 1 or request.session.role == 2 %}
       <td>
+        {% if request.session.role == 1 or request.session.role == 2 %}
         <a href="{% url 'updateProduct' product.idarticulo %}" class="btn btn-primary">
           <i class="fas fa-edit"></i>
         </a>
         <button class="btn btn-danger" onclick="deleteProduct('{{ product.idarticulo }}')">
           <i class="fas fa-trash-alt"></i>
         </button>
+        {%endif%}
       </td>
-      {%endif%}
     </tr>
     <tr>
       <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col"></th>
-      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col" colspan="5">Detalle</th>
+      {% if request.session.role == 3%}
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col" colspan="2">Detalle</th>
+      {% else %}
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col" colspan="3">Detalle</th>
+      {%endif%}
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col">Ingresado por</th>
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col">Fecha de ingreso</th>
     </tr>
     <tr id="card-body-{{ product.idarticulo}}" class="collapse">
       <td id="card-body-{{ product.idarticulo}}" class="collapse justify-middle"
@@ -69,8 +75,25 @@
         <img src="{{ product.image }}" alt="{{ product.nombre }}"
           style="height: 100%; width: 100%; object-fit: cover; border-radius:15px;">
       </td>
-      <td colspan="5">
-        <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.descripcion }}</div>
+      {% if request.session.role == 3%}
+      <td class="border-right" colspan="2">
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">
+          {{ product.descripcion }}
+        </div>
+      </td>
+      {% else %}
+      <td class="border-right" colspan="3">
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">
+          {{ product.descripcion }}
+        </div>
+      </td>
+      {%endif%}
+      <td>
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.created_by }}</div>
+      </td>
+      <td>
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.created_at|date:"d-m-Y" }}
+        </div>
       </td>
     </tr>
     <thead>

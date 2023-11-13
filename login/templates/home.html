@@ -1,7 +1,60 @@
 {% extends 'dashboard.html' %}
 {% block content %}
-<h1>Tu rol: {{ request.session.role }}!</h1>
-<h1>Bienvenido, {{ request.session.username }}!</h1>
+{% load static %}
+
+<div>
+  <h1>Bienvenido, {{ request.session.username }}!</h1>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 20px; padding: 30px;">
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-box-open fa-3x pb-4"></i>
+    <h3>Gestión de Productos</h3>
+    <p>
+      Implementa un sistema de seguimiento exhaustivo para cada artículo en tu inventario. Cada artículo debe estar
+      identificado con un SKU único, lo que facilita una identificación rápida y precisa.
+    </p>
+  </div>
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-project-diagram fa-3x pb-4"></i>
+    <h3>Seguimiento Detallado</h3>
+    <p>Asegura un seguimiento sin problemas del movimiento de los artículos, permitiéndote mantener un control preciso
+      de las existencias y realizar un análisis detallado de las tendencias de productos.</p>
+  </div>
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-tag fa-3x pb-4"></i>
+    <h3>Categorización de Productos</h3>
+    <p>Optimiza tu inventario con categorización eficiente y etiquetas para una organización detallada. La interfaz
+      intuitiva facilita la personalización, mientras filtros eficientes agilizan la navegación.</p>
+  </div>
+
+
+
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-user-lock fa-3x pb-4"></i>
+    <h3>Administración de Roles y Permisos</h3>
+    <p>
+      Crea una experiencia personalizada para cada miembro de tu equipo mediante la asignación de roles y permisos
+      específicos, gracias a nuestro sistema de Control de Acceso Basado en Roles (RBAC)
+    </p>
+  </div>
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-shield-alt fa-3x pb-4"></i>
+    <h3>Inicio de Sesión y Seguridad</h3>
+    <p>Garantiza la protección total de tus datos con nuestra sólida funcionalidad de Inicio de Sesión y Seguridad. Cada
+      cuenta está respaldada por un identificador único y una contraseña, proporcionando un acceso seguro y exclusivo.
+    </p>
+  </div>
+  <div style="padding: 30px; word-wrap: break-word; text-align: justify;">
+    <i class="fas fa-clipboard-check fa-3x pb-4"></i>
+    <h3>Intuitiva y Accesible</h3>
+    <p>Experimenta la comodidad en cada interacción con nuestra interfaz de usuario limpia y fácil de usar. Diseñada
+      para ser intuitiva y amigable, cada elemento ha sido pensado para ofrecer una experiencia sin complicaciones. La
+      navegación fluida y la disposición clara de información hacen que la plataforma sea accesible y acogedora para
+      todos los usuarios.</p>
+  </div>
+</div>
+
 
 
 <p></p>

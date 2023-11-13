@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'articulos',
     'django.contrib.humanize',
+    'categorias',
 ]
 
 MIDDLEWARE = [

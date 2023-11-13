@@ -13,7 +13,7 @@
 
     <title>Dashboard</title>
 
-    <script src="{% static '/js/mijs.js' %}"></script>
+    <script src="{% static 'js/mijs.js' %}"></script>
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -71,6 +71,17 @@
                 </a>
             </li>
 
+            {% if request.session.role == 1 or request.session.role == 2 %}
+
+            <!-- Nav Item - Pages Categories Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'categories' %}">
+                    <i class="fas fa-fw fa-pencil-ruler"></i>
+                    <span>Categorías</span>
+                </a>
+            </li>
+
+            {% endif %}
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -150,8 +161,8 @@
 
             <!-- Footer -->
             <footer class="sticky-footer bg-dark">
-                <div class="container my-auto">
-                    FOOTER
+                <div class="container my-auto text-center">
+                    <h5 class="text-">© 2077 Copyright: Videllius Corp Incorporated Asociated</h5>
                 </div>
             </footer>
             <!-- End of Footer -->

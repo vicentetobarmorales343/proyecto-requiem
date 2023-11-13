@@ -1,5 +1,6 @@
 {% extends 'dashboard.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 <div class="d-flex p-2">
   <h1>Usuarios</h1>
@@ -27,9 +28,9 @@
       {% elif user.idrol == 2 %}
       <td>Jefe de trade</td>
       {% else %}
-      <td>Usuario</td>
+      <td>Empleado</td>
       {% endif %}
-      <td>{{ user.created_at }}</td>
+      <td>{{ user.created_at|date:"d-m-Y" }}</td>
       <td>
         <a class="btn btn-primary" href="{% url 'updateUser' user.rut %}">
           <i class="fas fa-edit"></i>

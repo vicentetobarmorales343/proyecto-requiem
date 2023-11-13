@@ -33,3 +33,21 @@ function deleteProduct(idarticulo) {
       });
   }
 }
+
+function deleteCategory(idcategoria) {
+  if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
+    fetch('/deleteCategory/' + idcategoria, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          // Recarga la página
+          location.reload();
+        } else {
+          // Muestra un mensaje de error
+          alert(data.message);
+        }
+      });
+  }
+}

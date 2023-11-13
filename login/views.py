@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 import requests
 from decorators import *
 import json
+from datetime import datetime
 
 # Create your views here.
 
@@ -29,6 +30,7 @@ def login_page(req):
                 req.session['login_status'] = True
                 req.session['username'] = user['nombre']
                 req.session['role'] = user['idrol']
+                req.session['rut'] = user['rut']
                 req.session.save()
                 return redirect('home')
 
@@ -54,6 +56,10 @@ def users_view(req):
         response = requests.get('http://localhost:4000/api/Inventory/Users')
         if response.status_code == 200:
             users = response.json()
+
+            for user in users:
+                user['created_at'] = datetime.strptime(
+                    user['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
 
             return render(req, 'users.html', {'users': users})
         else:

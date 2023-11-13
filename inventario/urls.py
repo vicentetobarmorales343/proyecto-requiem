@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from login import views as views_login
 from articulos import views as views_articulos
+from categorias import views as views_categorias
 
 
 urlpatterns = [
@@ -41,5 +42,11 @@ urlpatterns = [
          views_articulos.updateProduct, name='updateProduct'),
     path('searchProducts/',
          views_articulos.searchProduct, name="searchProduct"),
+    path('categories/', views_categorias.categories, name="categories"),
+    path('addCategory/', views_categorias.addCategory, name="addCategory"),
+    path('deleteCategory/<str:idcategoria>',
+         views_categorias.deleteCategory, name="deleteCategory"),
+    path('updateCategory/<str:idcategoria>',
+         views_categorias.updateCategory, name="updateCategory"),
 
 ]

@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="p-2 space-between">
+  <h1 class="d-inline">Categorías</h1>
+  {% if request.session.role == 1 or request.session.role == 2 %}
+  <a href="{%url 'addCategory'%}" class="justify-middle" style="text-decoration:none">
+    <button class=" d-inline btn btn-primary">
+      <i class="fas fa-plus"></i>
+      Añadir
+    </button>
+  </a>
+  {% endif %}
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for categoria in categorias %}
+    <tr class="mask" data-toggle="collapse" data-target="#card-body-{{ categoria.idcategoria }}"
+      style="cursor: pointer;">
+      <td>{{ categoria.nombre }}</td>
+      <td>
+        {% if request.session.role == 1 or request.session.role == 2 %}
+        <a href="{% url 'updateCategory' categoria.idcategoria %}" class="btn btn-primary">
+          <i class="fas fa-edit"></i>
+        </a>
+        <button class="btn btn-danger" onclick="deleteCategory('{{ categoria.idcategoria }}')">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+        {%endif%}
+      </td>
+    </tr>
+    <thead>
+      {% endfor %}
+  </tbody>
+</table>
+
+<script src="{% static '/js/mijs.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'dashboard.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+<h1>Ingresar Categoría</h1>
+
+{% if name_founded %}
+<div class="alert alert-danger" role="alert">
+  <h5>Ese nombre ya está en uso</h5>
+</div>
+{% endif %}
+
+<form method="POST" action="">
+  {% csrf_token %}
+  <div class="form-inline p-2">
+    <label for="nombre" class="pr-2">Nombre:</label>
+    <input class="form-control mr-sm-2" type="text" id="nombre" name="nombre" required>
+    <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Crear Categoría</button>
+  </div>
+
+</form>
+
+
+
+{% endblock %}

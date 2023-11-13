@@ -59,7 +59,9 @@
     </tr>
     <tr>
       <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col"></th>
-      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col" colspan="5">Detalle</th>
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col" colspan="3">Detalle</th>
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col">Ingresado/Editado por</th>
+      <th id="card-body-{{ product.idarticulo}}" class="collapse" scope="col">Fecha de ingreso</th>
     </tr>
     <tr id="card-body-{{ product.idarticulo}}" class="collapse">
       <td id="card-body-{{ product.idarticulo}}" class="collapse justify-middle"
@@ -67,8 +69,15 @@
         <img src="{{ product.image }}" alt="{{ product.nombre }}"
           style="height: 100%; width: 100%; object-fit: cover; border-radius:15px;">
       </td>
-      <td colspan="5">
+      <td class="border-right" colspan="3">
         <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.descripcion }}</div>
+      </td>
+      <td>
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.created_by }}</div>
+      </td>
+      <td>
+        <div id="card-body-{{ product.idarticulo }}" class="collapse description">{{ product.created_at|date:"d-m-Y" }}
+        </div>
       </td>
     </tr>
     <thead>
