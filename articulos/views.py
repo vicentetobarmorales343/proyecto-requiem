@@ -51,25 +51,16 @@ def productsEntry_page(request):
                 sku_founded = i['SKU']
                 print(sku_founded)
                 return render(request, 'ingreso.html', {'sku_founded': sku_founded})
-            else:
-                product = {
-                    'idcategoria': categoria,
-                    'SKU': sku,
-                    'nombre': nombre,
-                    'precio_venta': precio,
-                    'stock': stock,
-                    'descripcion': descripcion,
-                    'image': image,
-                }
 
-                response = requests.post(
-                    'http://localhost:4000/api/Inventory/addProduct', data=json.dumps(product), headers={'Content-Type': 'application/json'})
+        # Si llegamos aquí, significa que no encontramos un SKU coincidente
+        response = requests.post(
+            'http://localhost:4000/api/Inventory/addProduct', data=json.dumps(product), headers={'Content-Type': 'application/json'})
 
-                if response.status_code == 200:
-                    # redirige a una nueva página si el ingreso es exitoso
-                    return redirect('products')
-                else:
-                    return JsonResponse({'status': 'error', 'message': 'Failed to submit the product from API'})
+        if response.status_code == 200:
+            # redirige a una nueva página si el ingreso es exitoso
+            return redirect('products')
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Failed to submit the product from API'})
 
     else:
         # renderiza tu formulario si el método no es POST

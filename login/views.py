@@ -141,7 +141,6 @@ def updateUser(request, user_rut):
         return render(request, 'usersUpdate.html', {'user': user})
 
 
-@login_required
 def getUser(user_rut):
     response = requests.get(
         'http://localhost:4000/api/Inventory/User/'+user_rut)
