@@ -16,6 +16,11 @@
   <form method="POST" class="d-flex flex-column w-50 rounded border h-75 text-center " style="margin: 10%;">
     {% csrf_token %}
     <h1 class="bg-dark text-light p-2">Login</h1>
+    {% if message %}
+    <div class="alert alert-danger" role="alert">
+      <h5>{{message}}</h5>
+    </div>
+    {% endif %}
     <div class="form-group d-flex flex-column p-5">
       <label for="username" class="d-inline-flex h2">RUT:</label>
       <input type="text" id="username" name="username" class="p-2" required maxlength="10" />

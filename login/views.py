@@ -35,7 +35,7 @@ def login_page(req):
                 return redirect('home')
 
         # If no match was found after checking all users, return an error status
-        return JsonResponse({'status': 'error', 'message': 'Invalid username or password'})
+        return render(req, 'login.html', {'message': 'Contraseña y/o rut incorrecto'})
 
     return render(req, "login.html")
 
