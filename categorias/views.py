@@ -51,7 +51,8 @@ def addCategory(req):
                 return redirect('categories')
             else:
                 return JsonResponse({'status': 'error', 'message': 'Categoría no ingresada', 'category': categoria})
-    return render(req, 'ingresoCategoria.html')
+    else:
+        return render(req, 'ingresoCategoria.html')
 
 
 @csrf_exempt
