@@ -29,6 +29,7 @@ def products_page(req):
 @role_required
 def productsEntry_page(request):
     categorias = categories()
+
     if request.method == 'POST':
         sku = request.POST['sku']
         categoria = request.POST['category']
@@ -37,42 +38,59 @@ def productsEntry_page(request):
         stock = request.POST['stock']
         descripcion = request.POST['description']
         created_by = request.POST['createdBy']
-        image = request.POST['imageUrl']
+        # Change this line to match your form's file input name
+        file = request.FILES.get('file')  # Changed from 'image' to 'file'
+        
+        # Add file validation
+        if not file:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'No file was uploaded'
+            }, status=400)
 
-        product = {
+        # Create product data dictionary
+        product_data = {
             'idcategoria': categoria,
             'SKU': sku,
             'nombre': nombre,
             'precio_venta': precio,
             'stock': stock,
             'descripcion': descripcion,
-            'image': image,
             'created_by': created_by,
         }
+        
+        # Create files dictionary with the correct key
+        files = {
+            'file': (file.name, file, file.content_type)  # Changed from 'image' to 'file'
+        }
 
-        response_fuq = requests.get(
-            'http://localhost:4000/api/Inventory/Products')
-        products = response_fuq.json()
+        try:
+            response = requests.post(
+                'http://localhost:4000/api/Inventory/addProduct',
+                data=product_data,
+                files=files
+            )
+            
+            if response.status_code == 200:
+                return redirect('products')
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': f'API Error: {response.text}',
+                    'status_code': response.status_code
+                }, status=400)
+                
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': f'Request failed: {str(e)}'
+            }, status=500)
 
-        for i in products:
-            if str(i['SKU']) == str(sku):
-                sku_founded = i['SKU']
-                print(sku_founded)
-                return render(request, 'ingreso.html', {'sku_founded': sku_founded, 'categorias': categorias})
+    return render(request, 'ingreso.html', {'categorias': categorias})
 
-        # Si llegamos aquí, significa que no encontramos un SKU coincidente
-        response = requests.post(
-            'http://localhost:4000/api/Inventory/addProduct', data=json.dumps(product), headers={'Content-Type': 'application/json'})
 
-        if response.status_code == 200:
-            # redirige a una nueva página si el ingreso es exitoso
-            return redirect('products')
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Failed to submit the product from API'})
 
-    else:
-        # renderiza tu formulario si el método no es POST
-        return render(request, 'ingreso.html', {'categorias': categorias})
+
 
 
 @csrf_exempt
@@ -97,35 +115,61 @@ def updateProduct(req, idarticulo):
     id_articulo = getProduct(idarticulo)
 
     if req.method == 'POST':
-        sku = req.POST['sku']
-        categoria = req.POST['category']
-        nombre = req.POST['name']
-        precio = req.POST['price']
-        stock = req.POST['stock']
-        descripcion = req.POST['description']
-        image = req.POST['imageUrl']
-        created_by = req.POST['createdBy']
+        # Create MultipartEncoder for proper file upload
+        files = {}
+        if 'file' in req.FILES:
+            files = {'file': (
+                req.FILES['file'].name,
+                req.FILES['file'],
+                req.FILES['file'].content_type
+            )}
 
-        product = {
-            'idcategoria': categoria,
-            'SKU': sku,
-            'nombre': nombre,
-            'precio_venta': precio,
-            'stock': stock,
-            'descripcion': descripcion,
-            'image': image,
-            'created_by': created_by
+        # Create form data
+        data = {
+            'idcategoria': req.POST['category'],
+            'SKU': req.POST['sku'],
+            'nombre': req.POST['name'],
+            'precio_venta': req.POST['price'],
+            'stock': req.POST['stock'],
+            'descripcion': req.POST['description'],
+            'created_by': req.POST['createdBy']
         }
+        
+        print("Data:", data)
 
-        response = requests.put(
-            'http://localhost:4000/api/Inventory/updateProduct/'+idarticulo, data=json.dumps(product), headers={'Content-Type': 'application/json'})
+        if 'imageUrl' in req.POST:
+            data['image'] = req.POST['imageUrl']
+
+        # If there are files, use multipart
+        if files:
+            response = requests.put(
+                f'http://localhost:4000/api/Inventory/updateProduct/{idarticulo}',
+                files=files,
+                data=data  # Send as form data, not JSON
+            )
+        else:
+            # If no files, send as regular form data
+            response = requests.put(
+                f'http://localhost:4000/api/Inventory/updateProduct/{idarticulo}',
+                json=data
+            )
+
         if response.status_code == 200:
             return redirect('products')
         else:
-            return JsonResponse({'status': 'error', 'message': 'Producto no actualizado', 'product': product})
+            print("Error response:", response.text)  # Add this for debugging
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Producto no actualizado',
+                'product': data
+            })
 
-    else:
-        return render(req, 'editarProducto.html', {'idarticulo': id_articulo, 'categorias': categorias})
+    return render(req, 'editarProducto.html', {
+        'idarticulo': id_articulo,
+        'categorias': categorias
+    })
+
+
 
 
 def getProduct(idarticulo):

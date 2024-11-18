@@ -11,16 +11,35 @@ from decorators import *
 @login_required
 @role_required
 def categories(req):
-    categorias = None
-    if req.method == 'GET':
-        response = requests.get(
-            'http://localhost:4000/api/Inventory/Categories/')
-        if response.status_code == 200:
+    try:
+        if req.method == 'GET':
+            response = requests.get('http://localhost:4000/api/Inventory/Categories/')
+            response.raise_for_status()  # This will raise an exception for HTTP errors
+            
             categorias = response.json()
-    if categorias:
-        return render(req, 'categorias.html', {'categorias': categorias})
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Failed to retrieve categories from API'})
+            
+            # Check if the response is empty or None
+            if not categorias:
+                return render(req, 'categorias.html', {
+                    'categorias': [],
+                    'message': 'No hay categorías disponibles.'
+                })
+            
+            return render(req, 'categorias.html', {'categorias': categorias})
+            
+    except requests.RequestException as e:
+        # Handle any API request errors
+        return render(req, 'categorias.html', {
+            'categorias': [],
+            'error': f'Error al obtener las categorías: {str(e)}'
+        })
+    except ValueError as e:
+        # Handle JSON decode errors
+        return render(req, 'categorias.html', {
+            'categorias': [],
+            'error': 'Error al procesar la respuesta del servidor'
+        })
+
 
 
 @login_required

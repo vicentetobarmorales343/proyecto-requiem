@@ -7,7 +7,7 @@
   <h5>SKU ya está en uso</h5>
 </div>
 {% endif %}
-<form method="POST" style="width: 40%;">
+<form method="POST" style="width: 40%;" enctype="multipart/form-data">
   {% csrf_token %}
 
   <div class="form-group">
@@ -50,7 +50,7 @@
   </div>
 
   <div class="form-group">
-    <input type="file" id="file" name="file">
+    <input type="file" id="file" name="file" accept="image/png, image/jpeg">
   </div>
 
   <div class="form-group">
@@ -65,6 +65,31 @@
 
 </form>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pica/6.1.1/pica.min.js"></script>
+<script>
+  const fileInput = document.getElementById('file');
+  const img = document.getElementById('imagen-cargada');
+  const imageUrlInput = document.getElementById('imageUrl');
+  let publicImageUrl = ""; // Para almacenar la URL pública devuelta por la API
+
+  // Al seleccionar una imagen
+  fileInput.addEventListener('change', (e) => {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const base64Image = reader.result;
+      img.src = base64Image; // Mostrar la imagen cargada en Base64 en la pantalla
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  
+</script>
+
+
+<!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/6.1.1/pica.min.js"></script>
 <script>
   const fileInput = document.getElementById('file');
@@ -113,6 +138,6 @@
     reader.readAsDataURL(file);
   });
 </script>
-
+-->
 
 {% endblock %}

@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1 class="mb-5">Formulario de edición de productos</h1>
-<form method="POST" style="width: 40%;">
+<form method="POST" style="width: 40%;" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-group">
     <label for="sku" class="h4">SKU de producto</label>
@@ -44,7 +44,7 @@
   </div>
 
   <div class="form-group">
-    <input type="file" id="file" name="file">
+    <input type="file" id="file" name="file" accept="image/png, image/jpeg">
   </div>
 
   <div class="form-group">
@@ -69,48 +69,22 @@
   const fileInput = document.getElementById('file');
   const img = document.getElementById('imagen-cargada');
   const imageUrlInput = document.getElementById('imageUrl');
-  let imageUrl;
+  let publicImageUrl = ""; // Para almacenar la URL pública devuelta por la API
 
+  // Al seleccionar una imagen
   fileInput.addEventListener('change', (e) => {
     const file = fileInput.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', (e) => {
-      imageUrl = reader.result;
-      img.onload = function () {
-        // Create an off-screen canvas
-        var offScreenCanvas = document.createElement('canvas');
-        const aspectRatio = img.naturalWidth / img.naturalHeight;
-        if (img.naturalWidth > img.naturalHeight) {
-          offScreenCanvas.width = 200;
-          offScreenCanvas.height = 200 / aspectRatio;
-        } else {
-          offScreenCanvas.height = 200;
-          offScreenCanvas.width = 200 * aspectRatio;
-        }
-
-        // Resize the image
-        pica().resize(img, offScreenCanvas)
-          .then(result => pica().toBlob(result, 'image/jpeg', 0.90))
-          .then(blob => {
-            // Create a new FileReader instance
-            var reader = new FileReader();
-            // Listen to the 'load' event
-            reader.addEventListener('load', () => {
-              // reader.result contains the Base64 data
-              imageUrlInput.value = reader.result;
-            });
-            // Convert the blob to Base64
-            reader.readAsDataURL(blob);
-          });
-      }
-      img.src = imageUrl;
-      imageUrlInput.value = imageUrl;
-      console.log(imageUrlInput.value)
-    });
+    reader.onload = function (e) {
+      const base64Image = reader.result;
+      img.src = base64Image; // Mostrar la imagen cargada en Base64 en la pantalla
+    };
 
     reader.readAsDataURL(file);
   });
+
+  
 </script>
 
 {% endblock %}

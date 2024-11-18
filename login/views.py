@@ -17,27 +17,47 @@ def home_page(req):
 @redirect_if_logged_in
 def login_page(req):
     if req.method == 'POST':
-        username = req.POST['username']  # Keep this as 'username'
+        username = req.POST['username']  
         password = req.POST['password']
 
-        response = requests.get('http://localhost:4000/api/Inventory/Users')
-        users = response.json()
+        try:
+            # Send the credentials in the request body
+            response = requests.post(
+                'http://localhost:4000/api/Inventory/login',
+                json={
+                    'rut': username,  # Match the API's expected field name
+                    'password': password
+                }
+            )
+            
+            # Check if the request was successful
+            if response.status_code == 201:  # Your API returns 201 on success
+                user_data = response.json()
+                user = user_data.get('user')
+                
+                if user:
+                    # Store user data in session
+                    req.session['login_status'] = True
+                    req.session['username'] = user['nombre']
+                    req.session['role'] = user['idrol']
+                    req.session['rut'] = user['rut']
+                    req.session.save()
+                    return redirect('home')
+                
+            # If response wasn't successful or user data is invalid
+            return render(req, 'login.html', {
+                'message': 'Contraseña y/o rut incorrecto'
+            })
 
-        for user in users:
-            # Change 'username' to 'rut' here
-            if user['rut'] == username and user['password'] == password:
-                # If the username and password match, return a success status
-                req.session['login_status'] = True
-                req.session['username'] = user['nombre']
-                req.session['role'] = user['idrol']
-                req.session['rut'] = user['rut']
-                req.session.save()
-                return redirect('home')
-
-        # If no match was found after checking all users, return an error status
-        return render(req, 'login.html', {'message': 'Contraseña y/o rut incorrecto'})
+        except requests.exceptions.RequestException as e:
+            # Handle API connection errors
+            print(f"API Error: {str(e)}")
+            return render(req, 'login.html', {
+                'message': 'Error de conexión con el servidor'
+            })
 
     return render(req, "login.html")
+
 
 
 def logout_view(request):
@@ -92,7 +112,7 @@ def usersEntry_page(request):
         else:
             response = requests.post(
                 'http://localhost:4000/api/Inventory/addUser', data=json.dumps(user_entry), headers={'Content-Type': 'application/json'})
-            if response.status_code == 200:
+            if response.status_code == 200 | response.status_code == 201:
                 return redirect('users')
             else:
                 return JsonResponse({'status': 'error', 'message': 'Usuario no ingresado'})
